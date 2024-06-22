@@ -1,0 +1,1 @@
+{"test_times": "1", "wait_time": "3", "file_name": "test", "save_path": "C:/Users/qaxsd/OneDrive - SEOULTECH/Project/ST Work/AutoWork/autoPerformaceTest"}

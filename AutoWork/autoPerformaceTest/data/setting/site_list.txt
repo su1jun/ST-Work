@@ -1,0 +1,8 @@
+서울과학기술대학교(국문):https://www.seoultech.ac.kr/index.jsp
+서울과학기술대학교(영문):https://en.seoultech.ac.kr/
+카이스트(국문):https://www.kaist.ac.kr/kr/
+카이스트(영문):https://www.kaist.ac.kr/en//
+서울시립대학교(국문):https://www.uos.ac.kr/main.do?epTicket=LOG
+서울시립대학교(영문):https://www.uos.ac.kr/en/main.do
+서울대학교(국문):https://www.snu.ac.kr/
+서울대학교(영문):https://en.snu.ac.kr/

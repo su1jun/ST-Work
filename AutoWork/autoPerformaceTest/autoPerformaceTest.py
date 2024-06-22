@@ -26,6 +26,7 @@ from datetime import datetime
 import tkinter.messagebox as msgbox
 from tkinter import * # __all__
 from tkinter import filedialog
+from collections import defaultdict
 
 from openpyxl import Workbook
 
@@ -265,35 +266,40 @@ class Auto_Web_Driver:
 
 def run(data, path):
     # 웹드라이버 설정
-    site_path = os.path.join(path, 'assets', 'set', 'site_list.txt') # 저장된 사이트 목록 이름
+    site_path = os.path.join(path, 'data', 'set', 'site_list.txt') # 저장된 사이트 목록 이름
 
     target_sites = {}
     # 사이트 목록 불러오고 저장하기
     try:
         if os.path.exists(site_path):
             with open(site_path, 'r') as f:
-                target_sites = json.loads(f.read())
-    except json.JSONDecodeError:
-        pass
+                for line in f:
+                    if ":" in line:
+                        name, site = line.strip().split(":", 1)
+                        target_sites[name.strip()] = site.strip()
+    except Exception as e:
+        print(f"parsing err : {e}")
 
     if not target_sites:
         target_sites = {
-        '서울과학기술대학교(국문)':'https://www.seoultech.ac.kr/index.jsp',
-        '서울과학기술대학교(영문)':'https://en.seoultech.ac.kr/',
-        '카이스트(국문)':'https://www.kaist.ac.kr/kr/',
-        '카이스트(영문)':'https://www.kaist.ac.kr/en//',
-        '서울시립대학교(국문)':'https://www.uos.ac.kr/main.do?epTicket=LOG',
-        '서울시립대학교(영문)':'https://www.uos.ac.kr/en/main.do',
-        '서울대학교(국문)':'https://www.snu.ac.kr/',
-        '서울대학교(영문)':'https://en.snu.ac.kr/',
+            '서울과학기술대학교(국문)':'https://www.seoultech.ac.kr/index.jsp',
+            '서울과학기술대학교(영문)':'https://en.seoultech.ac.kr/',
+            '카이스트(국문)':'https://www.kaist.ac.kr/kr/',
+            '카이스트(영문)':'https://www.kaist.ac.kr/en//',
+            '서울시립대학교(국문)':'https://www.uos.ac.kr/main.do?epTicket=LOG',
+            '서울시립대학교(영문)':'https://www.uos.ac.kr/en/main.do',
+            '서울대학교(국문)':'https://www.snu.ac.kr/',
+            '서울대학교(영문)':'https://en.snu.ac.kr/',
         }
 
-    if os.path.exists(site_path):
-        with open(site_path, 'w') as f:
-            f.write(json.dumps(target_sites))
-    else:
-        with open(site_path, mode="w+") as f:
-            f.write(json.dumps(target_sites))
+    try:
+        with open(site_path, 'w' if os.path.exists(site_path) else 'w+') as f:
+            for name, site in target_sites.items():
+                f.write(f"{name}:{site}\n")
+        print(f"파일 경로: {os.path.abspath(site_path)}")
+    except Exception as e:
+        print(f"파일 저장 중 오류 발생: {e}")
+        
     print(f"Sile path: {os.path.abspath(site_path)}")
 
     result = test(data, target_sites, path)
@@ -313,7 +319,7 @@ def run(data, path):
 
     gui.root.destroy()
 
-def test(data, target_sites):
+def test(data, target_sites, path):
     # 웹드라이버 설정
     auto_web_driver = Auto_Web_Driver((0, 0), path) # 클릭 클래스
 
